@@ -8,14 +8,15 @@ import (
 	"regexp"
 )
 
-const tasksFile = "tasky.json"
+const taskyFile = "tasky.json"
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("cli tasks manager")
+		fmt.Println("tasky is a cli task manager!")
 		return
 	}
 
+	help := "commands: \n add \n remove \n list \nsee aliases to this commands on https://github.com/jvqtil/tasky/"
 	do := os.Args[1]
 
 	switch do {
@@ -24,9 +25,11 @@ func main() {
 		addTask(task)
 		case "list", "ls":
 		listTasks()
-		case "rem", "rm", "remove", "del", "delete": 
+		case "rem", "rm", "remove", "delete", "del": 
 		task := strings.Join(os.Args[2:], " ")
 		remTask(task)
+		case "help", "man":
+		fmt.Println(help)
 	}
 }
 
@@ -73,7 +76,7 @@ func remTask(task string) {
 	}
 
 	if len(updTasks) == len(tasks) {
-		fmt.Println("No such task found")
+		fmt.Println("no such task found")
 		return
 	}
 
@@ -89,7 +92,7 @@ func remTask(task string) {
 func loadTasks() ([]string, error) {
 	var tasks []string
 
-	data, err := os.ReadFile(tasksFile)
+	data, err := os.ReadFile(taskyFile)
 	if err != nil {
 		if os.IsNotExist(err) {
 			return tasks, nil
@@ -110,7 +113,7 @@ func saveTasks(tasks []string) error {
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(tasksFile, data, 0644)
+	return os.WriteFile(taskyFile, data, 0644)
 }
 
 func listTasks() {
@@ -125,7 +128,7 @@ func listTasks() {
 		return
 	}
 
-	fmt.Println("tasks list")
+	fmt.Println("tasks list -", taskyFile)
 	fmt.Println()
 	for _, task := range tasks {
 		fmt.Println(task)
