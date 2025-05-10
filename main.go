@@ -39,6 +39,8 @@ func main() {
 		}
 	case "help", "man":
 		fmt.Println(help)
+	default:
+		fmt.Println("command not found, see tasky help\n", help)
 	}
 }
 
