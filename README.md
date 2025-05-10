@@ -30,7 +30,7 @@ That is the best way for working in teams on any projects. You can just add task
 -   `rem "text"` or `rm` or even `delete` to remove a task with "text" (terminal regular expressions are allowed - `*` and `?` for now)
 -   `list` or `ls` to see tasks list
 -   `archive "text"` to archive a task with "text" (or unarchive it if already archived)
--   `archive ls` to see the list of archived tasks
+-   `archive` to see the list of archived tasks
 -   `help` or `man` to see help message
 
 ### Examples of usage
@@ -46,8 +46,8 @@ Will remove the task you have just created (it's name is "make some things in ne
 Will display all the tasks you have (in tasky.json in current dir for sure) <br>
 `tasky archive "make some things in new version"` <br>
 Will archive / unarchive the task with name "make some things in new version" <br>
-`tasky archive ls` <br>
-Will display all archived tasks (from taskyarchive.json) <br>
+`tasky archive` <br>
+Will display all archived tasks <br>
 
 </details>
 

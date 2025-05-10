@@ -13,7 +13,8 @@ const archiveFile = "taskyarchive.json"
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("tasky is a cli task manager!")
+		fmt.Println("tasky is a cli task manager!\n")
+		listTasks()
 		return
 	}
 
