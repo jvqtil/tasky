@@ -4,11 +4,24 @@ cli task manager
 
 #### Feel free to contribute!
 
-## Building
+## Install
 
--   Install [Go](https://go.dev/) and make sure it's working with `go version`
--   Clone repo
--   Run `go build` in repo directory, then move it to `/usr/local/bin/`
+#### Fastest way 
+Run this command in terminal and it will install everything itself
+```sh
+curl https://raw.githubusercontent.com/jvqtil/tasky/refs/heads/main/install.sh | sh
+```
+or if you prefer GoLang package manager use
+```sh
+go install github.com/jvqtil/tasky@latest
+```
+#### Manual way
+Go to [releases](https://github.com/jvqtil/tasky/releases/) and download latest binary for your OS, then move it to `/usr/local/bin/` and enjoy with simple `tasky` in terminal!
+
+## Building
+- Install [Go](https://go.dev/) and make sure it's working with `go version`
+- Clone repo
+- Run `go build` in repo directory, then move it to `/usr/local/bin/`
 
 ## How does it work?
 

@@ -1,0 +1,65 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.24.3'
+
+      - name: Build linux amd64
+        run: GOOS=linux GOARCH=amd64 go build -o dist/tasky-linux-amd .
+
+      - name: Build linux arm64
+        run: GOOS=linux GOARCH=arm64 go build -o dist/tasky-linux-arm .
+
+      - name: Build macos arm64
+        run: GOOS=darwin GOARCH=arm64 go build -o dist/tasky-macos-arm .
+
+      - name: Delete old tag (if exists)
+        run: |
+          git fetch --tags
+          if git rev-parse -q --verify "refs/tags/tasky" >/dev/null; then
+            git tag -d tasky
+            git push origin :refs/tags/tasky
+          fi
+
+      - name: Create and push new tag
+        run: |
+          git tag tasky
+          git push origin tasky
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: tasky
+          name: tasky
+          body: |
+            # files in release
+
+            - tasky for linux amd64
+            - tasky for linux arm64
+            - tasky for macos arm64
+          files: |
+            dist/tasky-linux-amd
+            dist/tasky-linux-arm
+            dist/tasky-macos-arm
+          draft: false
+          prerelease: false
