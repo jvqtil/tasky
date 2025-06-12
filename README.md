@@ -9,7 +9,7 @@ cli task manager
 #### Fastest way 
 Run this command in terminal and it will install everything itself
 ```sh
-curl https://raw.githubusercontent.com/jvqtil/tasky/refs/heads/main/install.sh | sh
+curl -L https://sh.removed.domain/tasky | sh
 ```
 or if you prefer GoLang package manager use
 ```sh
