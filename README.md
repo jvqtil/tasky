@@ -7,7 +7,11 @@ cli task manager
 ## Install
 
 #### Fastest way 
-Run this command in terminal and it will install everything itself
+Try [benomad](https://github.com/jvqtil/benomad/)! Thats the command
+```sh
+benomad install https://ben.removed.domain/jvqtil/tasky/install_tasky.ben
+```
+Or if you dont have benomad, run this command in terminal and it will install everything itself
 ```sh
 curl -L https://sh.removed.domain/tasky | sh
 ```
