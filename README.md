@@ -2,6 +2,8 @@
 
 cli task manager
 
+<img src="photo.png" width="500px">
+
 #### Feel free to contribute!
 
 ## Install
