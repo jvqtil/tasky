@@ -1,8 +1,6 @@
 # tasky
 
-cli task manager
-
-<img src="photo.png" width="500px">
+<img src="photo.png" width="300px" alt="cli task manager">
 
 #### Feel free to contribute!
 
