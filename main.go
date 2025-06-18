@@ -9,33 +9,40 @@ import (
 )
 
 const taskyFile = "tasky.json"
-const archiveFile = "taskyarchive.json"
 
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("tasky is a cli task manager!\n")
-		listTasks()
+		err := listTasks()
+		if err != nil {
+			fmt.Println(err)
+		}
 		return
 	}
 
-	help := "commands: \n add \n remove \n list \n archive \nsee aliases to this commands on https://github.com/jvqtil/tasky/"
+	help := "commands: \n add \n list \n done \nsee aliases to this commands on https://github.com/jvqtil/tasky"
 	do := os.Args[1]
 
-	switch do {
-	case "add", "put", "touch", "new":
+	switch strings.ToLower(do) {
+	case "add", "put", "touch", "new", "make":
 		task := strings.Join(os.Args[2:], " ")
-		addTask(task)
+		err := addTask(task)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 	case "list", "ls":
-		listTasks()
-	case "rem", "rm", "remove", "delete", "del":
+		err := listTasks()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+	case "done", "did":
 		task := strings.Join(os.Args[2:], " ")
-		remTask(task)
-	case "archive", `hide`, `move`, `mv`:
-		if len(os.Args) > 2 {
-			task := strings.Join(os.Args[2:], " ")
-			archiveTask(task)
-		} else {
-			listArchive()
+		err := doneTask(task)
+		if err != nil {
+			fmt.Println(err)
+			return
 		}
 	case "help", "man":
 		fmt.Println(help)
@@ -44,42 +51,58 @@ func main() {
 	}
 }
 
-func addTask(task string) {
+func addTask(thisTask string) error {
+	if thisTask == "" {
+		return fmt.Errorf("cant save empty task!")
+	}
+
 	tasks, err := loadTasks(taskyFile)
 	if err != nil {
-		fmt.Println("error loading tasks")
-		return
+		return err
 	}
 
-	if task == "" {
-		return
-	}
-
-	tasks = append(tasks, task)
+	tasks = append(tasks, thisTask)
 
 	err = saveTasks(taskyFile, tasks)
 	if err != nil {
-		fmt.Println("error saving tasks")
-		return
+		return err
 	}
 
-	fmt.Println("task added")
+	fmt.Println("task added!")
+	return nil
 }
 
-func remTask(task string) {
+func listTasks() error {
+	tasks, err := loadTasks(taskyFile)
+	if err != nil {
+		return err
+	}
+
+	count := len(tasks)
+	if count == 0 {
+		return fmt.Errorf("no tasks found!")
+	}
+
+	fmt.Printf("tasks list (%d) - %s\n\n", count, taskyFile)
+	for _, task := range tasks {
+		fmt.Println(task)
+	}
+
+	return nil
+}
+
+func doneTask(task string) error {
 	task = strings.ReplaceAll(task, "*", ".*")
 	task = strings.ReplaceAll(task, "?", ".")
 
 	reg, err := regexp.Compile("^" + task + "$")
 	if err != nil {
-		fmt.Println("error", err)
-		return
+		return err
 	}
 
 	tasks, err := loadTasks(taskyFile)
 	if err != nil {
-		fmt.Println("error loading tasks")
-		return
+		return err
 	}
 
 	var updTasks []string
@@ -90,136 +113,16 @@ func remTask(task string) {
 	}
 
 	if len(updTasks) == len(tasks) {
-		fmt.Println("no such task found")
-		return
+		return fmt.Errorf("no such task found!")
 	}
 
 	err = saveTasks(taskyFile, updTasks)
 	if err != nil {
-		fmt.Println("error saving tasks")
-		return
+		return err
 	}
 
-	fmt.Println("task removed")
-}
-
-func archiveTask(task string) {
-	task = strings.ReplaceAll(task, "*", ".*")
-	task = strings.ReplaceAll(task, "?", ".")
-
-	reg, err := regexp.Compile("^" + task + "$")
-	if err != nil {
-		fmt.Println("error", err)
-		return
-	}
-
-	tasks, err := loadTasks(taskyFile)
-	if err != nil {
-		fmt.Println("error loading tasks")
-		return
-	}
-
-	archive, err := loadTasks(archiveFile)
-	if err != nil {
-		fmt.Println("error loading archive")
-		return
-	}
-
-	var updTasks []string
-	var foundInTasks bool
-	for _, t := range tasks {
-		if reg.MatchString(t) {
-			foundInTasks = true
-			archive = append(archive, t)
-		} else {
-			updTasks = append(updTasks, t)
-		}
-	}
-
-	if foundInTasks {
-		err = saveTasks(taskyFile, updTasks)
-		if err != nil {
-			fmt.Println("error saving tasks")
-			return
-		}
-
-		err = saveTasks(archiveFile, archive)
-		if err != nil {
-			fmt.Println("error saving archive")
-			return
-		}
-
-		fmt.Println("task archived")
-		return
-	}
-
-	var updArchive []string
-	var foundInArchive bool
-	for _, t := range archive {
-		if reg.MatchString(t) {
-			foundInArchive = true
-			tasks = append(tasks, t)
-		} else {
-			updArchive = append(updArchive, t)
-		}
-	}
-
-	if foundInArchive {
-		err = saveTasks(taskyFile, tasks)
-		if err != nil {
-			fmt.Println("error saving tasks")
-			return
-		}
-
-		err = saveTasks(archiveFile, updArchive)
-		if err != nil {
-			fmt.Println("error saving archive")
-			return
-		}
-
-		fmt.Println("task unarchived")
-		return
-	}
-
-	fmt.Println("no such task found")
-}
-
-func listTasks() {
-	tasks, err := loadTasks(taskyFile)
-	if err != nil {
-		fmt.Println("error loading tasks")
-		return
-	}
-
-	count := len(tasks)
-	if count == 0 {
-		fmt.Println("no tasks")
-		return
-	}
-
-	fmt.Printf("tasks list (%d) - %s\n\n", count, taskyFile)
-	for _, task := range tasks {
-		fmt.Println(task)
-	}
-}
-
-func listArchive() {
-	archive, err := loadTasks(archiveFile)
-	if err != nil {
-		fmt.Println("error loading archive")
-		return
-	}
-
-	count := len(archive)
-	if count == 0 {
-		fmt.Println("no archived tasks")
-		return
-	}
-
-	fmt.Printf("archived tasks list (%d) - %s\n\n", count, archiveFile)
-	for _, task := range archive {
-		fmt.Println(task)
-	}
+	fmt.Println("task done!")
+	return nil
 }
 
 func loadTasks(fileName string) ([]string, error) {
@@ -230,12 +133,12 @@ func loadTasks(fileName string) ([]string, error) {
 		if os.IsNotExist(err) {
 			return tasks, nil
 		}
-		return nil, err
+		return nil, fmt.Errorf("error reading tasky file! %v", err)
 	}
 
 	err = json.Unmarshal(data, &tasks)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error decoding tasky file! %v", err)
 	}
 
 	return tasks, nil
@@ -244,7 +147,8 @@ func loadTasks(fileName string) ([]string, error) {
 func saveTasks(fileName string, tasks []string) error {
 	data, err := json.MarshalIndent(tasks, "", "  ")
 	if err != nil {
-		return err
+		return fmt.Errorf("error encoding tasky file! %v", err)
 	}
+
 	return os.WriteFile(fileName, data, 0644)
 }
