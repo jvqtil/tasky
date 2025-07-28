@@ -1,5 +1,0 @@
-name: "install_tasky"
-version: "@"
-description: "tasky installer script"
-script: "https://raw.githubusercontent.com/jvqtil/tasky/refs/heads/main/install.sh"
-
