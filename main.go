@@ -7,11 +7,10 @@ import (
 	"strings"
 )
 
-const taskyFile = "tasky.json"
+const taskyFile = "tasky.list"
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("tasky is a cli task manager!\n")
 		err := listTasks()
 		if err != nil {
 			fmt.Println(err)
@@ -19,19 +18,13 @@ func main() {
 		return
 	}
 
-	help := "commands: \n add \n list \n done \nsee aliases to this commands on https://github.com/jvqtil/tasky"
+	help := "tasky is a cli task manager! \n\ncommands: \n add \n done \nsee aliases to this commands on https://github.com/jvqtil/tasky"
 	do := os.Args[1]
 
 	switch strings.ToLower(do) {
 	case "add", "put", "touch", "new", "make":
 		task := strings.Join(os.Args[2:], " ")
 		err := addTask(task)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-	case "list", "ls":
-		err := listTasks()
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -46,7 +39,7 @@ func main() {
 	case "help", "man":
 		fmt.Println(help)
 	default:
-		fmt.Println("command not found, see tasky help\n", help)
+		fmt.Println("command not found\n" + help)
 	}
 }
 
@@ -82,9 +75,9 @@ func listTasks() error {
 		return fmt.Errorf("no tasks found!")
 	}
 
-	fmt.Printf("tasks list (%d) - %s\n\n", count, taskyFile)
+	fmt.Printf("tasky.list (%d)\n\n", count)
 	for _, task := range tasks {
-		fmt.Println(task)
+		fmt.Println("-", task)
 	}
 
 	return nil
