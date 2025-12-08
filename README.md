@@ -31,7 +31,7 @@ When you done a task it just removes from tasky.todo, so you like just drop it
 
 ### Why tasky.todo in current dir?
 
-That is the best way for working in teams on any projects. You can just add tasky.todo to git repo and it will sync all across your team's computers!
+That is probably the best way for working in teams on any projects. You can just add tasky.todo to git repo and it will sync all across your team's computers!
 
 ## Usage
 
@@ -39,8 +39,6 @@ That is the best way for working in teams on any projects. You can just add task
 
 -   `add "text"` to add a new task with "text"
 -   `done "text"` to make done a task with "text" (terminal regular expressions are allowed - `*` and `?` for now)
--   `list` or `ls` to see tasks list
-
 
 -   `help` or `man` to see help message
 
@@ -53,16 +51,13 @@ That is the best way for working in teams on any projects. You can just add task
 Will add a task with name of "make some things in new version" <br>
 `tasky done "make some things in new version"` <br>
 Will make done the task you have just created (it's name is "make some things in new version" if you already forgot 😊) <br>
-`tasky list` <br>
-Will display all the tasks you have (in tasky.todo in current dir for sure) <br>
 
 </details>
 
 ## Aliases list
 
 `add`, `put`, `touch`, `new`, `make` - add a new task <br>
-`done`, `did` - make task done <br>
-`list`, `ls` - see tasks list <br>
-`help`, `man` - see help message
+`done`, `did`, `rm`, `remove`, `close`, `delete`, `drop` - make task done <br>
+`help`, `man`, `-h`, `--help` - see help message
 
 #### note: dont forget that you can add own aliases in your shell's config file (~/.zshrc for zsh, ~/.bashrc for bash, etc)
