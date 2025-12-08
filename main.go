@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-const taskyFile = "tasky.list"
+const taskyFile = "tasky.todo"
 
 func main() {
 	if len(os.Args) < 2 {
@@ -29,14 +29,14 @@ func main() {
 			fmt.Println(err)
 			return
 		}
-	case "done", "did":
+	case "done", "did", "rm", "remove", "close", "delete", "drop":
 		task := strings.Join(os.Args[2:], " ")
 		err := doneTask(task)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-	case "help", "man":
+	case "help", "man", "-h", "--help":
 		fmt.Println(help)
 	default:
 		fmt.Println("command not found\n" + help)
@@ -75,7 +75,7 @@ func listTasks() error {
 		return fmt.Errorf("no tasks found!")
 	}
 
-	fmt.Printf("tasky.list (%d)\n\n", count)
+	fmt.Printf("%s (%d)\n\n", taskyFile, count)
 	for _, task := range tasks {
 		fmt.Println("-", task)
 	}

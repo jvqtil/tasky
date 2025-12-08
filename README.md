@@ -25,13 +25,13 @@ Go to [releases](https://github.com/jvqtil/tasky/releases/) and download latest 
 
 ## How does it work?
 
-When you run `tasky add "text"`, tasky automatically creates tasky.json file in the current directory and all future work will be with that file until you change the current directory.
+When you run `tasky add "text"`, tasky automatically creates tasky.todo file in the current directory and all future work will be with that file until you change the current directory.
 
-When you done a task it just removes from tasky.json, so you like just drop it
+When you done a task it just removes from tasky.todo, so you like just drop it
 
-### Why tasky.json in current dir?
+### Why tasky.todo in current dir?
 
-That is the best way for working in teams on any projects. You can just add tasky.json to git repo and it will sync all across your team's computers!
+That is the best way for working in teams on any projects. You can just add tasky.todo to git repo and it will sync all across your team's computers!
 
 ## Usage
 
@@ -54,7 +54,7 @@ Will add a task with name of "make some things in new version" <br>
 `tasky done "make some things in new version"` <br>
 Will make done the task you have just created (it's name is "make some things in new version" if you already forgot 😊) <br>
 `tasky list` <br>
-Will display all the tasks you have (in tasky.json in current dir for sure) <br>
+Will display all the tasks you have (in tasky.todo in current dir for sure) <br>
 
 </details>
 
